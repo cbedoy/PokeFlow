@@ -6,11 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewParent
+import android.view.animation.AnimationUtils
+import android.widget.TextView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import cbedoy.pokeflow.R
 
 fun ViewGroup.inflate(resId : Int) : View {
     return LayoutInflater.from(context).inflate(resId, this, false)
 }
 
+fun TextView.setTextWithVisibility(text: String){
+    setText(text)
+    isGone = text.isEmpty()
+}
+
+val String.asPokeNumber: String
+    get() = String.format("%04d", this.toIntOrNull()?:0);
+
+fun View.onClickBounceAnimation(){
+    val bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.bounce)
+    setOnClickListener {
+        startAnimation(bounceAnimation)
+    }
+}
 
 fun String.toColor(): Int = Color.parseColor(this)

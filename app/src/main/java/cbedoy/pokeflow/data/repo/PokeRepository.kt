@@ -28,9 +28,9 @@ class PokeRepository(
                 response.body.results.forEach { responseItem ->
                     val pokeId = responseItem.id
                     pokeId?.let {
-                        val detail = service.getPokeDetail(pokeId)
-                        val color = service.getPokeColor(pokeId)
-                        val specie = service.getSpecie(pokeId)
+                        val detail = getDetail(pokeId)
+                        val color = getColor(pokeId)
+                        val specie = getSpecie(pokeId)
                         val poke = preparePokeWith(detail, color, specie)
                         emit(poke)
                     }
@@ -39,14 +39,40 @@ class PokeRepository(
         }
     }
 
+    private suspend fun getDetail(pokeId: String) : PokeItemResponse {
+        return when(val response = service.getPokeDetail(pokeId)){
+            is NetworkResponse.Success -> {
+                response.body
+            }
+            else -> PokeItemResponse()
+        }
+    }
+
+    private suspend fun getColor(pokeId: String) : PokeColorResponse {
+        return when(val response = service.getPokeColor(pokeId)){
+            is NetworkResponse.Success -> {
+                response.body
+            }
+            else -> PokeColorResponse()
+        }
+    }
+
+    private suspend fun getSpecie(pokeId: String) : PokeSpecieResponse {
+        return when(val response = service.getSpecie(pokeId)){
+            is NetworkResponse.Success -> {
+                response.body
+            }
+            else -> PokeSpecieResponse()
+        }
+    }
+
     private fun preparePokeWith(detail : PokeItemResponse, color : PokeColorResponse, specie : PokeSpecieResponse) : Poke {
         return with(detail){
             Poke(
+                number = id?:"",
                 name = name?.capitalize()?:"",
                 image = sprites?.avatar?:"",
-                type = types?.joinToString(separator = "/", transform = {
-                    it.type?.name?:""
-                })?:"",
+                type = types?.map { it.type?.name?:"" }?: emptyList(),
                 description = specie.description,
                 moves = movesAsText,
                 abilities = abilitiesAsText,
@@ -56,7 +82,7 @@ class PokeRepository(
     }
 
     val PokeSpecieResponse.description : String
-        get() = flavorTextEntries.firstOrNull { it.flavorText != null }?.flavorText?: ""
+        get() = flavorTextEntries.firstOrNull { it.flavorText != null }?.flavorText?.removeBreadlines ?: ""
 
     val PokeItem.id: String?
         get() = url.split("/").lastOrNull{ it.isNotEmpty() }
@@ -75,4 +101,6 @@ class PokeRepository(
                 "- ${it.ability?.name?:""}"
             }) ?: ""
 
+    val String.removeBreadlines
+        get() = replace("\n", "")
 }

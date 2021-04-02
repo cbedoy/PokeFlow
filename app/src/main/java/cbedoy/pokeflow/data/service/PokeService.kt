@@ -14,11 +14,11 @@ interface PokeService {
     suspend fun getPokes(@Query("limit")limit: Int): NetworkResponse<PokeResponse, Unit>
 
     @GET("v2/pokemon/{pokeId}")
-    suspend fun getPokeDetail(@Path("pokeId") productId: String): PokeItemResponse
+    suspend fun getPokeDetail(@Path("pokeId") productId: String): NetworkResponse<PokeItemResponse, Unit>
 
     @GET("v2/pokemon-color/{pokeId}")
-    suspend fun getPokeColor(@Path("pokeId") productId: String): PokeColorResponse
+    suspend fun getPokeColor(@Path("pokeId") productId: String): NetworkResponse<PokeColorResponse, Unit>
 
     @GET("v2/pokemon-species/{pokeId}")
-    suspend fun getSpecie(@Path("pokeId") productId: String): PokeSpecieResponse
+    suspend fun getSpecie(@Path("pokeId") productId: String): NetworkResponse<PokeSpecieResponse, Unit>
 }

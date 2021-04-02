@@ -1,5 +1,6 @@
 package cbedoy.pokeflow.ui.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import cbedoy.pokeflow.SliderTransformer
+import cbedoy.pokeflow.ZoomOutPageTransformer
 import cbedoy.pokeflow.databinding.FragmentPokePagerBinding
+import cbedoy.pokeflow.di.POKE_COUNT
 import cbedoy.pokeflow.domain.intent.PokeIntent
 import cbedoy.pokeflow.domain.state.PokeState
 import cbedoy.pokeflow.ui.PokeViewModel
@@ -33,13 +37,15 @@ class PokePagerFragment : Fragment(){
         savedInstanceState : Bundle?
     ) = binding.root
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         with(binding.viewPager){
             adapter = pokeAdapter
+            setPageTransformer(SliderTransformer(POKE_COUNT))
         }
+        binding.creditView.text = "Made with \uD83C\uDF2E❤️ by Carlos Bedoy"
         lifecycleScope.launch {
             viewModel.state.collect {  state ->
                 handleState(state)

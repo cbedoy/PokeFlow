@@ -2,12 +2,12 @@ package cbedoy.pokeflow.model
 
 data class Poke(
     val name: String = "",
-    val amount: Float = 0.0f,
+    val number: String = "",
     val description: String = "",
     val secondaryDescription: String = "",
     val image: String = "",
     val color: String = "",
-    val type: String = "",
+    val type: List<String> = emptyList(),
     val moves: String = "",
     val abilities: String = "",
 ){
