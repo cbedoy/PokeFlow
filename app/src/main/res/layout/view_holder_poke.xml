@@ -40,8 +40,8 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="320dp"
+        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        tools:layout_editor_absoluteY="205dp"
         tools:srcCompat="@tools:sample/avatars" />
 
     <LinearLayout

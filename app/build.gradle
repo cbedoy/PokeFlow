@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
 }
 
 android {
@@ -69,6 +72,8 @@ dependencies {
 
     implementation "com.github.haroldadmin:NetworkResponseAdapter:4.1.0"
 
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

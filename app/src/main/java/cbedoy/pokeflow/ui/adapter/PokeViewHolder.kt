@@ -27,30 +27,31 @@ class PokeViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
             number.text = poke.number.asPokeNumber
             description.text = poke.description
 
+            val types = poke.type.split(",")
+
             when {
-                poke.type.isEmpty() -> {
+                types.isEmpty() -> {
                     typeTwo.isVisible = false
                     typeOne.isVisible = false
                 }
-                poke.type.size == 1 -> {
+                types.size == 1 -> {
                     with(typeOne){
                         isVisible = true
-                        text = poke.type[0]
+                        text = types[0]
                     }
                     typeOne.isVisible = false
                 }
-                poke.type.size == 2 -> {
+                types.size == 2 -> {
                     with(typeOne){
                         isVisible = true
-                        text = poke.type[0]
+                        text = types[0]
                     }
                     with(typeTwo){
                         isVisible = true
-                        text = poke.type[1]
+                        text = types[1]
                     }
                 }
             }
-
         }
     }
 

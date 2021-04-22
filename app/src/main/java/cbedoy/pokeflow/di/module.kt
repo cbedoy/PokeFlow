@@ -1,6 +1,11 @@
 package cbedoy.pokeflow.di
 
+import android.app.Application
+import androidx.room.Room
 import cbedoy.pokeflow.BuildConfig
+import cbedoy.pokeflow.data.LocalDataSource
+import cbedoy.pokeflow.data.database.AppDatabase
+import cbedoy.pokeflow.data.database.PokeDao
 import cbedoy.pokeflow.data.repo.PokeRepository
 import cbedoy.pokeflow.data.service.PokeService
 import cbedoy.pokeflow.domain.PokeUseCase
@@ -10,6 +15,7 @@ import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 import retrofit2.Retrofit
@@ -31,7 +37,9 @@ val fragmentModule = module {
 }
 
 val repoModule = module {
-    single { PokeRepository(service = get()) }
+    single { PokeRepository(service = get(), localDataSource = get()) }
+
+    single { LocalDataSource(dao = get()) }
 }
 
 val useCaseModule = module {
@@ -69,4 +77,19 @@ private fun addLoggingInterceptor(httpBuilder: OkHttpClient.Builder) {
     httpBuilder.addInterceptor(logging)
 }
 
-val appModule = viewModelModule + repoModule + useCaseModule + service + fragmentModule
+val databaseModule = module {
+    fun provideDatabase(application: Application): AppDatabase {
+        return Room.databaseBuilder(application, AppDatabase::class.java, "pokes")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    fun providePokeDao(database: AppDatabase): PokeDao {
+        return database.pokeDao()
+    }
+
+    single { provideDatabase(androidApplication()) }
+    single { providePokeDao(get()) }
+}
+
+val appModule = viewModelModule + repoModule + useCaseModule + service + fragmentModule + databaseModule

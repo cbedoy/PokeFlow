@@ -1,20 +1,17 @@
 package cbedoy.pokeflow.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Poke(
+    @PrimaryKey val number: Long,
     val name: String = "",
-    val number: String = "",
     val description: String = "",
     val secondaryDescription: String = "",
     val image: String = "",
     val color: String = "",
-    val type: List<String> = emptyList(),
+    val type: String = "",
     val moves: String = "",
     val abilities: String = "",
-){
-    val thumbnail: String
-        get() {
-            return if (image.isEmpty()){
-                "https://dummyimage.com/300x300/${color.replace("#", "")}/FFF.png&text=${name}"
-            }else image
-        }
-}
+)

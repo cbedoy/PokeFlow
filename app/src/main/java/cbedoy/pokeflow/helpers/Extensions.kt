@@ -21,8 +21,8 @@ fun TextView.setTextWithVisibility(text: String){
     isGone = text.isEmpty()
 }
 
-val String.asPokeNumber: String
-    get() = String.format("%04d", this.toIntOrNull()?:0);
+val Long.asPokeNumber: String
+    get() = String.format("%03d", this);
 
 fun View.onClickBounceAnimation(){
     val bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.bounce)

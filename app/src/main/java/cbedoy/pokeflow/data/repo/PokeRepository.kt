@@ -1,13 +1,15 @@
 package cbedoy.pokeflow.data.repo
 
 import cbedoy.pokeflow.data.*
+import cbedoy.pokeflow.data.database.PokeDao
 import cbedoy.pokeflow.data.service.PokeService
 import cbedoy.pokeflow.model.Poke
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.flow.flow
 
 class PokeRepository(
-    private val service : PokeService
+    private val service : PokeService,
+    private val localDataSource : LocalDataSource
 ) {
     private val colors = mapOf(
         "black" to "#292929",
@@ -23,16 +25,24 @@ class PokeRepository(
 
 
     suspend fun getPokes(count: Int) = flow {
+
+        val localPokes = localDataSource.allPokes
+        emit(localPokes)
+
         when(val response = service.getPokes(count)){
             is NetworkResponse.Success -> {
                 response.body.results.forEach { responseItem ->
                     val pokeId = responseItem.id
-                    pokeId?.let {
-                        val detail = getDetail(pokeId)
-                        val color = getColor(pokeId)
-                        val specie = getSpecie(pokeId)
-                        val poke = preparePokeWith(detail, color, specie)
-                        emit(poke)
+                    val found = localPokes.firstOrNull { it.number == pokeId?.toLongOrNull()?:0 } != null
+                    if (!found) {
+                        pokeId?.let {
+                            val detail = getDetail(pokeId)
+                            val color = getColor(pokeId)
+                            val specie = getSpecie(pokeId)
+                            val poke = preparePokeWith(detail, color, specie)
+                            localDataSource.save(poke)
+                            emit(localDataSource.allPokes)
+                        }
                     }
                 }
             }
@@ -69,10 +79,10 @@ class PokeRepository(
     private fun preparePokeWith(detail : PokeItemResponse, color : PokeColorResponse, specie : PokeSpecieResponse) : Poke {
         return with(detail){
             Poke(
-                number = id?:"",
+                number = id?:0,
                 name = name?.capitalize()?:"",
                 image = sprites?.avatar?:"",
-                type = types?.map { it.type?.name?:"" }?: emptyList(),
+                type = typesAsText,
                 description = specie.description,
                 moves = movesAsText,
                 abilities = abilitiesAsText,
@@ -81,11 +91,17 @@ class PokeRepository(
         }
     }
 
-    val PokeSpecieResponse.description : String
+    private val PokeSpecieResponse.description : String
         get() = flavorTextEntries.firstOrNull { it.flavorText != null }?.flavorText?.removeBreadlines ?: ""
 
-    val PokeItem.id: String?
+    private val PokeItem.id: String?
         get() = url.split("/").lastOrNull{ it.isNotEmpty() }
+
+
+    private val PokeItemResponse.typesAsText: String
+        get() = types?.joinToString(separator = ",", transform = {
+            it.type?.name?:""
+        }) ?: ""
 
     val PokeItemResponse.movesAsText: String
         get() = moves?.joinToString(

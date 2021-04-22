@@ -28,7 +28,7 @@ data class PokeColorResponse(
 )
 
 data class PokeItemResponse(
-    val id: String? = "",
+    val id: Long? = null,
     val name: String? = "",
     val url: String? = "",
     val weight: Int? = 0,
