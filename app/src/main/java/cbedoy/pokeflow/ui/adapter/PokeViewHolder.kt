@@ -18,14 +18,12 @@ class PokeViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(poke: Poke){
         with(binding){
-            container.setBackgroundColor(poke.color.toColorInt())
             image.load(poke.image){
                 crossfade(true)
             }
             image.onClickBounceAnimation()
             name.text = poke.name
             number.text = poke.number.asPokeNumber
-            description.text = poke.description
 
             val types = poke.type.split(",")
 

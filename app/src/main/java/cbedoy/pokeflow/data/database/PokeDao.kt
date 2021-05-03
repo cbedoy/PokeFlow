@@ -5,7 +5,7 @@ import cbedoy.pokeflow.model.Poke
 
 @Dao
 interface PokeDao {
-    @Query("SELECT * FROM poke ORDER BY number DESC")
+    @Query("SELECT * FROM poke ORDER BY number ASC")
     fun getAll(): List<Poke>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -11,19 +11,6 @@ class PokeRepository(
     private val service : PokeService,
     private val localDataSource : LocalDataSource
 ) {
-    private val colors = mapOf(
-        "black" to "#292929",
-        "blue" to "#2062ac",
-        "grey" to "#292929",
-        "yellow" to "#f6bd20",
-        "red" to "#c52018",
-        "white" to "#FAFAFA",
-        "brown" to "#8b6241",
-        "green" to "#6ad531",
-        "orange" to "#ff7b41",
-    )
-
-
     suspend fun getPokes(count: Int) = flow {
 
         val localPokes = localDataSource.allPokes
@@ -37,9 +24,13 @@ class PokeRepository(
                     if (!found) {
                         pokeId?.let {
                             val detail = getDetail(pokeId)
-                            val color = getColor(pokeId)
-                            val specie = getSpecie(pokeId)
-                            val poke = preparePokeWith(detail, color, specie)
+                            //val color = getColor(pokeId)
+                            //val specie = getSpecie(pokeId)
+                            val poke = preparePokeWith(
+                                detail = detail,
+                                color = null,
+                                specie = null
+                            )
                             localDataSource.save(poke)
                             emit(localDataSource.allPokes)
                         }
@@ -76,17 +67,17 @@ class PokeRepository(
         }
     }
 
-    private fun preparePokeWith(detail : PokeItemResponse, color : PokeColorResponse, specie : PokeSpecieResponse) : Poke {
+    private fun preparePokeWith(detail : PokeItemResponse, color : PokeColorResponse?, specie : PokeSpecieResponse?) : Poke {
         return with(detail){
             Poke(
                 number = id?:0,
                 name = name?.capitalize()?:"",
                 image = sprites?.avatar?:"",
                 type = typesAsText,
-                description = specie.description,
+                description = specie?.description?:"",
                 moves = movesAsText,
                 abilities = abilitiesAsText,
-                color = colors[color.name] ?:"#a0a0a0"
+                color = ""
             )
         }
     }

@@ -1,6 +1,7 @@
 package cbedoy.pokeflow.helpers
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import cbedoy.pokeflow.R
 
 fun ViewGroup.inflate(resId : Int) : View {
@@ -32,3 +34,6 @@ fun View.onClickBounceAnimation(){
 }
 
 fun String.toColor(): Int = Color.parseColor(this)
+
+val Fragment.isLandscape
+    get() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE

@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import cbedoy.pokeflow.SliderTransformer
 import cbedoy.pokeflow.ZoomOutPageTransformer
 import cbedoy.pokeflow.databinding.FragmentPokePagerBinding
 import cbedoy.pokeflow.di.POKE_COUNT
 import cbedoy.pokeflow.domain.intent.PokeIntent
 import cbedoy.pokeflow.domain.state.PokeState
+import cbedoy.pokeflow.helpers.isLandscape
 import cbedoy.pokeflow.ui.PokeViewModel
 import cbedoy.pokeflow.ui.adapter.PokeAdapter
 import kotlinx.coroutines.flow.collect
@@ -31,6 +34,12 @@ class PokePagerFragment : Fragment(){
         FragmentPokePagerBinding.inflate(LayoutInflater.from(context))
     }
 
+    private val gridLayoutManager by lazy {
+        GridLayoutManager(
+            context, if (isLandscape) 3 else 2, LinearLayoutManager.VERTICAL, false
+        )
+    }
+
     override fun onCreateView(
         inflater : LayoutInflater,
         container : ViewGroup?,
@@ -41,9 +50,9 @@ class PokePagerFragment : Fragment(){
     override fun onViewCreated(view : View, savedInstanceState : Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding.viewPager){
+        with(binding.recyclerView){
             adapter = pokeAdapter
-            setPageTransformer(SliderTransformer(POKE_COUNT))
+            layoutManager = gridLayoutManager
         }
         binding.creditView.text = "Made with \uD83C\uDF2E❤️ by Carlos Bedoy"
         lifecycleScope.launch {
@@ -69,6 +78,9 @@ class PokePagerFragment : Fragment(){
             }
             is PokeState.ReloadPokes -> {
                 pokeAdapter.submitList(state.pokes)
+                binding.recyclerView.postDelayed({
+                    binding.recyclerView.scrollToPosition(pokeAdapter.itemCount - 1)
+                }, 1000)
             }
             is PokeState.ShowOrHideLoader -> {
                 binding.progressBar.isVisible = state.isVisible
