@@ -12,4 +12,7 @@ class LocalDataSource(
 
     val allPokes
         get() = dao.getAll()
+
+    val allTypes
+        get() = dao.getAllTypes()
 }

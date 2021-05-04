@@ -40,6 +40,16 @@ class PokeRepository(
         }
     }
 
+    suspend fun loadTypes() = flow {
+        val typesSet = mutableSetOf<String>().apply {
+            add("All Pokes")
+        }
+        localDataSource.allTypes.map {
+            typesSet.addAll(it.split(","))
+        }
+        emit(typesSet)
+    }
+
     private suspend fun getDetail(pokeId: String) : PokeItemResponse {
         return when(val response = service.getPokeDetail(pokeId)){
             is NetworkResponse.Success -> {

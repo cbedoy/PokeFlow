@@ -8,6 +8,9 @@ interface PokeDao {
     @Query("SELECT * FROM poke ORDER BY number ASC")
     fun getAll(): List<Poke>
 
+    @Query("SELECT DISTINCT type from poke")
+    fun getAllTypes(): List<String>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(pokes: List<Poke>)
 

@@ -60,6 +60,9 @@ class PokePagerFragment : Fragment(){
                 handleState(state)
             }
         }
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.perform(PokeIntent.LoadPokeList)
+        }
     }
 
     override fun onResume() {
@@ -71,19 +74,16 @@ class PokePagerFragment : Fragment(){
     private fun handleState(state : PokeState) {
         when(state){
             is PokeState.Ilde -> {
-                binding.progressBar.isVisible = false
+                binding.swipeRefreshLayout.isRefreshing = false
             }
             is PokeState.LoadedTypes -> {
 
             }
             is PokeState.ReloadPokes -> {
                 pokeAdapter.submitList(state.pokes)
-                binding.recyclerView.postDelayed({
-                    binding.recyclerView.scrollToPosition(pokeAdapter.itemCount - 1)
-                }, 1000)
             }
             is PokeState.ShowOrHideLoader -> {
-                binding.progressBar.isVisible = state.isVisible
+                binding.swipeRefreshLayout.isRefreshing = state.isVisible
             }
         }
     }

@@ -71,6 +71,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
 
     implementation "com.github.haroldadmin:NetworkResponseAdapter:4.1.0"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
