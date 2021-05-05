@@ -15,4 +15,8 @@ class LocalDataSource(
 
     val allTypes
         get() = dao.getAllTypes()
+
+    fun pokesFilterBy(type: String): List<Poke> {
+        return dao.getPokesFilterBy(type)
+    }
 }

@@ -22,7 +22,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val POKE_COUNT = 600
+const val POKE_COUNT = 50
+const val REFRESHING_OFFSET = 10
 
 val viewModelModule = module {
     viewModel {

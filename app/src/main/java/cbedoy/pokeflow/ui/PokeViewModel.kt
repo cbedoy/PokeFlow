@@ -14,8 +14,11 @@ class PokeViewModel(
 
     override suspend fun onCollect(intent : PokeIntent, producer : Producer<PokeState>) {
         when(intent){
-            PokeIntent.LoadPokeList -> {
+            is PokeIntent.LoadPokeList -> {
                 producer(useCase.loadPokes)
+            }
+            is PokeIntent.FilterPokesUsing -> {
+                producer(useCase.filterPokeUsingFilter(intent.filter))
             }
         }
     }

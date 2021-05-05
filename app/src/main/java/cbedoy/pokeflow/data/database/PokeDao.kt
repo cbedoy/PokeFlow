@@ -11,6 +11,9 @@ interface PokeDao {
     @Query("SELECT DISTINCT type from poke")
     fun getAllTypes(): List<String>
 
+    @Query("SELECT * FROM poke WHERE type LIKE :typeText")
+    fun getPokesFilterBy(typeText: String): List<Poke>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(pokes: List<Poke>)
 

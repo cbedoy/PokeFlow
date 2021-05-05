@@ -3,9 +3,11 @@ package cbedoy.pokeflow.data.repo
 import cbedoy.pokeflow.data.*
 import cbedoy.pokeflow.data.database.PokeDao
 import cbedoy.pokeflow.data.service.PokeService
+import cbedoy.pokeflow.model.Filter
 import cbedoy.pokeflow.model.Poke
 import com.haroldadmin.cnradapter.NetworkResponse
 import kotlinx.coroutines.flow.flow
+import java.util.*
 
 class PokeRepository(
     private val service : PokeService,
@@ -41,13 +43,25 @@ class PokeRepository(
     }
 
     val loadTypes = flow {
-        val typesSet = mutableSetOf<String>().apply {
-            add("All Pokes")
+        val typesSet = mutableSetOf<Filter>().apply {
+            add(Filter(selected = true, "All Pokes"))
         }
-        localDataSource.allTypes.map {
-            typesSet.addAll(it.split(","))
+        localDataSource.allTypes.map { types ->
+            typesSet.addAll(types.split(",").map { splitResult ->
+                Filter(title = splitResult.capitalize(Locale.ROOT))
+            })
         }
-        emit(typesSet)
+        emit(typesSet.toList())
+    }
+
+    fun filterUsing(filter: Filter) = flow {
+        if (filter.title == "All Pokes"){
+            val localPokes = localDataSource.allPokes
+            emit(localPokes)
+        } else {
+            val pokes = localDataSource.pokesFilterBy(filter.title)
+            emit(pokes)
+        }
     }
 
     private suspend fun getDetail(pokeId: String) : PokeItemResponse {

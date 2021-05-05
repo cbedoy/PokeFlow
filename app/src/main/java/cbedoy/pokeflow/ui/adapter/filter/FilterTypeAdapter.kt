@@ -1,13 +1,15 @@
 package cbedoy.pokeflow.ui.adapter.filter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import cbedoy.pokeflow.R
 import cbedoy.pokeflow.helpers.inflate
+import cbedoy.pokeflow.model.Filter
 
-class FilterTypeAdapter : ListAdapter<String, FilterTypeViewHolder>(
+class FilterTypeAdapter(
+        val onSelectedFilter: (Filter) -> Unit
+) : ListAdapter<Filter, FilterTypeViewHolder>(
     FilterTypeAdapterDiffUtil
 ) {
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : FilterTypeViewHolder {
@@ -16,16 +18,19 @@ class FilterTypeAdapter : ListAdapter<String, FilterTypeViewHolder>(
 
     override fun onBindViewHolder(holder : FilterTypeViewHolder, position : Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            onSelectedFilter(getItem(position))
+        }
     }
 }
 
-object FilterTypeAdapterDiffUtil : DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem : String, newItem : String) : Boolean {
-        return oldItem == newItem
+object FilterTypeAdapterDiffUtil : DiffUtil.ItemCallback<Filter>() {
+    override fun areItemsTheSame(oldItem : Filter, newItem : Filter) : Boolean {
+        return oldItem.selected == newItem.selected
     }
 
-    override fun areContentsTheSame(oldItem : String, newItem : String) : Boolean {
-        return oldItem == newItem
+    override fun areContentsTheSame(oldItem : Filter, newItem : Filter) : Boolean {
+        return oldItem.title == newItem.title
     }
 
 }

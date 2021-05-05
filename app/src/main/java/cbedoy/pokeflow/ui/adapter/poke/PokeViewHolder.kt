@@ -5,13 +5,23 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import cbedoy.pokeflow.databinding.ViewHolderPokeBinding
 import cbedoy.pokeflow.helpers.asPokeNumber
+import cbedoy.pokeflow.helpers.createHorizontalLinearLayoutManager
 import cbedoy.pokeflow.helpers.onClickBounceAnimation
 import cbedoy.pokeflow.model.Poke
+import cbedoy.pokeflow.ui.adapter.type.TypeAdapter
 import coil.load
 
 class PokeViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+
+    private val typeAdapter = TypeAdapter()
+
     private val binding by lazy {
-        ViewHolderPokeBinding.bind(itemView)
+        ViewHolderPokeBinding.bind(itemView).also {
+            with(it.typesRecyclerView){
+                layoutManager = context.createHorizontalLinearLayoutManager
+                adapter = typeAdapter
+            }
+        }
     }
 
     fun bind(poke: Poke){
@@ -24,30 +34,7 @@ class PokeViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
             number.text = poke.number.asPokeNumber
 
             val types = poke.type.split(",")
-
-            when {
-                types.isEmpty() -> {
-                    typeTwo.isVisible = false
-                    typeOne.isVisible = false
-                }
-                types.size == 1 -> {
-                    with(typeOne){
-                        isVisible = true
-                        text = types[0]
-                    }
-                    typeOne.isVisible = false
-                }
-                types.size == 2 -> {
-                    with(typeOne){
-                        isVisible = true
-                        text = types[0]
-                    }
-                    with(typeTwo){
-                        isVisible = true
-                        text = types[1]
-                    }
-                }
-            }
+            typeAdapter.submitList(types)
         }
     }
 
