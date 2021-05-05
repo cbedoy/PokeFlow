@@ -40,7 +40,7 @@ class PokeRepository(
         }
     }
 
-    suspend fun loadTypes() = flow {
+    val loadTypes = flow {
         val typesSet = mutableSetOf<String>().apply {
             add("All Pokes")
         }

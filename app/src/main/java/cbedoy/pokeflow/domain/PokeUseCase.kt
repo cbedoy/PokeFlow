@@ -16,6 +16,9 @@ class PokeUseCase (private val repository : PokeRepository) {
 
                 emit(PokeState.ReloadPokes(pokes))
             }
+            repository.loadTypes.collect {
+                emit(PokeState.LoadedTypes(it.toList()))
+            }
             emit(PokeState.Ilde)
         }
 }

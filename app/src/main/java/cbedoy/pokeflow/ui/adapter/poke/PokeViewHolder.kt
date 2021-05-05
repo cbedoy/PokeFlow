@@ -1,8 +1,6 @@
-package cbedoy.pokeflow.ui.adapter
+package cbedoy.pokeflow.ui.adapter.poke
 
 import android.view.View
-import androidx.core.graphics.toColorInt
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import cbedoy.pokeflow.databinding.ViewHolderPokeBinding

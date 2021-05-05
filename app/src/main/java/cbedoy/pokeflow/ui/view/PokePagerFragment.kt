@@ -5,20 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import cbedoy.pokeflow.SliderTransformer
-import cbedoy.pokeflow.ZoomOutPageTransformer
 import cbedoy.pokeflow.databinding.FragmentPokePagerBinding
-import cbedoy.pokeflow.di.POKE_COUNT
 import cbedoy.pokeflow.domain.intent.PokeIntent
 import cbedoy.pokeflow.domain.state.PokeState
 import cbedoy.pokeflow.helpers.isLandscape
 import cbedoy.pokeflow.ui.PokeViewModel
-import cbedoy.pokeflow.ui.adapter.PokeAdapter
+import cbedoy.pokeflow.ui.adapter.poke.PokeAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -77,10 +73,10 @@ class PokePagerFragment : Fragment(){
                 binding.swipeRefreshLayout.isRefreshing = false
             }
             is PokeState.LoadedTypes -> {
-
+                binding.filterTypeView.types = state.types
             }
             is PokeState.ReloadPokes -> {
-                pokeAdapter.submitList(state.pokes)
+                //pokeAdapter.submitList(state.pokes)
             }
             is PokeState.ShowOrHideLoader -> {
                 binding.swipeRefreshLayout.isRefreshing = state.isVisible

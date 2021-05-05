@@ -1,15 +1,10 @@
-package cbedoy.pokeflow
+package cbedoy.pokeflow.ui.adapter.filter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import cbedoy.pokeflow.databinding.ViewHolderFilterBinding
-import cbedoy.pokeflow.databinding.ViewHolderPokeBinding
 
-class FilterAdapter {
-}
-
-
-class FilterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class FilterTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val binding by lazy {
         ViewHolderFilterBinding.bind(itemView)
     }
