@@ -2,8 +2,11 @@
 
 Funny app which loads pokemons from pokeapi, these are displaying in recyclerview + list adapter. All items are stored in localstorage using room. Just apps to make funny things.
 
+Code based following StateFlow, MVI(State, Intent), Flow, Coroutines, Room + Unit Test
+
 ## How it looks
 
+![Poke flow running](https://media.giphy.com/media/rMpMiwv14IJGiIDWfO/giphy.gif)
 
 
 ## Code base structure:
