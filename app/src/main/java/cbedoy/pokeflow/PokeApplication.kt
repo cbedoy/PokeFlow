@@ -1,9 +1,11 @@
 package cbedoy.pokeflow
 
 import android.app.Application
-import cbedoy.pokeflow.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import poke.data.di.dataModule
+import poke.domain.di.domainModule
+import poke.presentation.di.presentationModule
 
 class PokeApplication : Application() {
     override fun onCreate() {
@@ -11,7 +13,7 @@ class PokeApplication : Application() {
 
         startKoin {
             androidContext(this@PokeApplication)
-            modules(appModule)
+            modules(modules = presentationModule + domainModule + dataModule)
         }
     }
 }

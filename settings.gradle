@@ -1,2 +1,6 @@
+include ':app:common'
+include ':app:presentation'
+include ':app:domain'
+include ':app:data'
 include ':app'
 rootProject.name = "PokeFlow"

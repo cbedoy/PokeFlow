@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import cbedoy.pokeflow.databinding.ActivityMainBinding
-import cbedoy.pokeflow.ui.view.PokePagerFragment
+import poke.presentation.ui.PokePagerFragment
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
