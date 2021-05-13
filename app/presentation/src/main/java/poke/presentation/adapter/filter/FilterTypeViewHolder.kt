@@ -3,9 +3,9 @@ package poke.presentation.adapter.filter
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import cbedoy.pokeflow.R
-import cbedoy.pokeflow.databinding.ViewHolderFilterBinding
 import poke.data.model.Filter
+import poke.presentation.R
+import poke.presentation.databinding.ViewHolderFilterBinding
 
 class FilterTypeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val binding by lazy {

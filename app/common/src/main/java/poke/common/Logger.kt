@@ -1,6 +1,7 @@
 package cbedoy.pokeflow
 
 import android.util.Log
+import poke.common.BuildConfig
 
 const val GLOBAL_TAG = "poke-app"
 

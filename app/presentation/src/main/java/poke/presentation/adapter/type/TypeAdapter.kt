@@ -3,8 +3,8 @@ package poke.presentation.adapter.type
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import cbedoy.pokeflow.R
 import cbedoy.pokeflow.helpers.inflate
+import poke.presentation.R
 
 class TypeAdapter: ListAdapter<String, TypeViewHolder>(
         TypeAdapterDiffUtil

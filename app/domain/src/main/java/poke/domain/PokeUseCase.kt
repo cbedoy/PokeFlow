@@ -1,9 +1,10 @@
 package poke.domain
 
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import poke.domain.state.PokeState
 import poke.data.model.Filter
 import poke.data.model.Poke
-import kotlinx.coroutines.flow.flow
 import poke.data.repo.PokeRepository
 import poke.domain.di.POKE_COUNT
 import poke.domain.di.REFRESHING_OFFSET
@@ -17,6 +18,7 @@ class PokeUseCase (private val repository : PokeRepository) {
         get() = flow {
             emit(PokeState.ShowOrHideLoader(true))
             emit(PokeState.ShowOrHideEmptyData(isVisible = false))
+
             repository.getPokes(POKE_COUNT).collect { pokes ->
                 emit(PokeState.ReloadPokes(pokes))
 

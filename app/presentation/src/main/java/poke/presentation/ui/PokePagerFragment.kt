@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import cbedoy.pokeflow.helpers.createGridLayoutManager
 import cbedoy.pokeflow.helpers.createHorizontalLinearLayoutManager
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import poke.presentation.PokeViewModel
 import poke.presentation.adapter.filter.FilterTypeAdapter
@@ -48,8 +50,8 @@ class PokePagerFragment : Fragment(){
         }
         binding.creditView.text = "Made with \uD83C\uDF2E❤️ by Carlos Bedoy"
         lifecycleScope.launch {
-            viewModel.state.collect {  state ->
-                handleState(state)
+            viewModel.state.collect {
+                handleState(it)
             }
         }
         binding.swipeRefreshLayout.setOnRefreshListener {

@@ -2,7 +2,7 @@ package poke.presentation.adapter.type
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import cbedoy.pokeflow.databinding.ViewHolderFilterBinding
+import poke.presentation.databinding.ViewHolderFilterBinding
 import java.util.*
 
 class TypeViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -3,9 +3,9 @@ package poke.presentation.adapter.filter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import cbedoy.pokeflow.R
 import cbedoy.pokeflow.helpers.inflate
 import poke.data.model.Filter
+import poke.presentation.R
 
 class FilterTypeAdapter(
         val onSelectedFilter: (Filter) -> Unit
